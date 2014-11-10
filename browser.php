@@ -93,12 +93,12 @@ if ($handle = opendir($fulldir)) {
   
   foreach($directories as $entry) {
     if(is_dir($dir_path.$entry)) {
-      print "<tr>";
-      print '<td><div class="file"><a href="./?dir='.$dir."/".$entry.'">['.substr($entry,0,150).']</a></div></td>';
-	  print "<td><div class='size'>".human_filesize(get_file($dir_path.$entry)['size'])."</div></td>";
-	  print "<td><div class='date'>".get_file($dir_path.$entry)['updated']."</div></td>";
-      print "</tr>";
-    }
+      	print "<tr>";
+      	print '<td><div class="file"><a href="'.$thisfilename.'?dir='.$dir."/".$entry.'">['.substr($entry,0,150).']</a></div></td>';
+	print "<td><div class='size'>".human_filesize(get_file($dir_path.$entry)['size'])."</div></td>";
+	print "<td><div class='date'>".get_file($dir_path.$entry)['updated']."</div></td>";
+      	print "</tr>";
+    	}
   }
     
     
