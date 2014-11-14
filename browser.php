@@ -26,8 +26,6 @@
 
 <?php
 
-
-
 error_reporting(E_ERROR | E_PARSE);
 
 // this is where we catch variables sent to this page.
@@ -46,13 +44,6 @@ $thisfilepath = str_replace($thisfilename, "",$thisfilelocation);
 $workdir = getcwd(); // no trailing '/'
 $webdir = $_SERVER['SERVER_NAME'].$thisfilepath;
 
-
-/* debug  
-print "<pre>";
-print_r(get_defined_vars());
-print "</pre>";
- */
-
 // This merge together the base directory and the user's requested folder.
 $fulldir = $workdir.$dir;
 
@@ -63,40 +54,35 @@ if ($handle = opendir($fulldir)) {
     $dirarray = explode("/",$dir);
 	print "<div class='nav'>";
     foreach ($dirarray as &$folder) {
-      if (!$folder) {
-		$folder = "root"; 
-		} // human name to root
-      //for($s = 0; $s < $i; $s++) { print "&nbsp;"; } // sposta il testo verso destra in base alla sottocartella
+      if (!$folder) { $folder = "root"; } // human name to root
       print '<a href="?dir=';
       for($s = 0; $s < $i; $s++) {
         if ($s) { print $dirarray[$s]; }
-        if ($dirarray[$s] != $folder) { print "/"; } // non mette la / se gia alla fine del path
+        if ($dirarray[$s] != $folder) { print "/"; } // add '/' in the right places for the GET variables
         }
       print '">';
-	  print '<img alt="Embedded Image" width="12" height="12" src="';
-	  print add_icon("nav");
-	  print '" />&nbsp;';
+	  print '<img width="12" height="12" src="'; // start img tag
+	  print add_icon("nav"); // insert image data
+	  print '" />&nbsp;'; // close img tag (and add a space)
       print "$folder";
       print "</a>";
       $i++;
       }
-	  print "</div>";
+	print "</div>";
     }
-	else { 
-		print '<div class="nav"><img alt="[dir]" width="12" height="12" src="'.add_icon("nav").'" />&nbsp;root</a></div>';
-		//print "<div class='nav'>&nbsp;[root]</div>"; 
-		}
-		
-		
+  else { 
+    print '<div class="nav"><img alt="[dir]" width="12" height="12" src="'.add_icon("nav").'" />&nbsp;root</a></div>'; 
+	}
+
   print "<hr>";
+
   // directory list with scandir
   $dir_path = $fulldir."/";
   $exclude_list = array(".", "..",);
   $directories = array_diff(scandir($dir_path), $exclude_list);
   
-  print "<table>";
-  
-  
+  print "<table>"; // start filetable
+
   foreach($directories as $entry) {
     if(is_dir($dir_path.$entry)) {
       print "<tr>";
@@ -104,14 +90,12 @@ if ($handle = opendir($fulldir)) {
 	  print "<td><div class='size'>".human_filesize(get_file($dir_path.$entry)['size'])."</div></td>";
 	  print "<td><div class='date'>".get_file($dir_path.$entry)['updated']."</div></td>";
       print "</tr>";
-    }
-  }
-    
-    
+      }
+	}
+ 
   foreach($directories as $entry) {
     if(is_file($dir_path.$entry)) {
       print "<tr>";
-	  
 	  print "<td><div class='file'>";
 		print '<img width="12" height="12" src="'.add_icon("empty").'" />&nbsp;'."<a href='//".get_file($dir_path.$entry)['link']."'>";
 		print get_file($dir_path.$entry)['name'];
@@ -120,11 +104,10 @@ if ($handle = opendir($fulldir)) {
 	  print "<td><div class='date'>".get_file($dir_path.$entry)['updated']."</div></td>";
  
       print "</tr>";
-    }
-  }
+      }
+	}
   
-    
-  print "</table><br />";
+  print "</table><br />"; // end filetable
 
   }
   
@@ -140,8 +123,8 @@ function get_file($entry) {
 		
 		return compact('name','folder','link','size','updated');
 		}
-		else {
-			return false;
+	else {
+		return false;
 		}
 }
  
@@ -150,7 +133,7 @@ function add_icon($type) {
 		$icon = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAwAAAAMCAYAAABWdVznAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAHBJREFUeNqU0TEKwCAUA9D2Sp5AXUQQ3cSbewgHN8Ep8tdqaRr44+NDcgO4fkXA87TWcM6BBtZajDHO6A1IBIUQQANJaw0xRtBgQwyQ1FqhlAIFeu/w3nMftra+WkopcS3NOZFz5nYwxqCUclx6CTAAwWgxaW7qSDsAAAAASUVORK5CYII%3D";
 		}
 	if ($type == "dir") {
-		$icon = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAwAAAAMCAMAAABhq6zVAAAAOVBMVEX///8AAAD++uj/9dj+8cb+7bP7wXT+7bT+7LP94H/+6KH96KD96KH+5I/95I/+447+33/+4H/94H4Po2KMAAAACXBIWXMAAABIAAAASABGyWs+AAAARUlEQVQI12NgwAMYGRkRbAYmBkYkCRgAcphZWNnAAMxh52BnZWXlhHC4uLl5uGAcXl4+fl5eKIeTU0BQiBPKYWNDGIAAAFwhAdTS6fXBAAAARHpUWHRDb21tZW50AAB42nNNySxJTVFIqlQISCzNUQjOSC3KTcxTSMsvUggPcM7JLEgsKtFRCChNyslMVnDJz03MzAMA0cYSC/gtqgsAAAAASUVORK5CYII%3D";
+		$icon = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAwAAAAMCAYAAABWdVznAAAAvUlEQVR4nI2PvQrCMBSFT+xNDehziJOjoCD4AK7OPpuzq7tQQUXcLbQ+govWmgSTOChSTAv5xvPDPZfhi9zCoYKYgKEG9kyYAwAx3v9EuRvVZT+FYhO5znDVGKjyOM5B1kawZR5UcI6BjGnBFemfZQG0aktkDIMrL0EXlOIgpXnwJKU5SMoYeN09M8+6nibaMUiqGHkWe2Z/tvC0dL0EScUxmPY8015PniYVB2nNYW/noB+0FiCtCYfE39vEG1EaRqExGIWPAAAAAElFTkSuQmCC";
 		}
 	if ($type == "file") {
 		$icon = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAwAAAAMCAYAAABWdVznAAABH0lEQVR4nI3OMU7DQBCF4X/tNZAGKm5Ag8QZOAA93CBNWrpcAYmWhpYLUKRJwQGooQYpSAGEQMHeXa+9MxRGCDsUvGak2f1mxgBM5kvlj5wf7rK1mZu1h/FsoY+vXkVVYyu6fK91PFvoZL7Ul7fQG5YBhBAZ2YwkigGMQrnyTA62Ob15onTND7IAPgQEpU7SfY6J1Yfj4blkr4Djyzv6wNXYjZy6EcAQRQgucHG7AANmRB9UlcO3qbvPGLLCcHayTytCm5Tp9f0QeFwUbAaKIc8MOyMLQGiEqvJDEAiNkGVd0wD6XauYKKvQB845XGyx+bpwdUtVugHwNT4Jhf6e3cU3Ce+GG3x3UrIQG6H08dsoRW4Jvu6D8tNxNL3iP/kC9mepySQNpKwAAAAASUVORK5CYII%3D";
@@ -165,7 +148,7 @@ function human_filesize($bytes, $decimals = 2) {
   $sz = 'BKMGTP';
   $factor = floor((strlen($bytes) - 1) / 3);
   return sprintf("%.{$decimals}f", $bytes / pow(1024, $factor)) . @$sz[$factor];
-} 
+  } 
 
 /* pascal brax 2014 */
   
