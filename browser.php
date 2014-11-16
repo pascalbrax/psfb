@@ -44,7 +44,7 @@ $thisfilepath = str_replace($thisfilename, "",$thisfilelocation);
 $workdir = getcwd(); // no trailing '/'
 $webdir = $_SERVER['SERVER_NAME'].$thisfilepath;
 
-// This merge together the base directory and the user's requested folder.
+// This merges together the base directory and the user's requested folder.
 $fulldir = $workdir.$dir;
 
 // path tree
@@ -81,7 +81,7 @@ if ($handle = opendir($fulldir)) {
   $exclude_list = array(".", "..",);
   $directories = array_diff(scandir($dir_path), $exclude_list);
   
-  print "<table>"; // start filetable
+  print "\n<table>"; // start filetable
 
   foreach($directories as $entry) {
     if(is_dir($dir_path.$entry)) {
@@ -89,7 +89,7 @@ if ($handle = opendir($fulldir)) {
       print '<td><div class="file"><img width="12" height="12" src="'.add_icon("nav").'" />&nbsp;<a href="'.$thisfilename.'?dir='.$dir."/".$entry.'">'.substr($entry,0,150).'</a></div></td>';
 	  print "<td><div class='size'>".human_filesize(get_file($dir_path.$entry)['size'])."</div></td>";
 	  print "<td><div class='date'>".get_file($dir_path.$entry)['updated']."</div></td>";
-      print "</tr>";
+      print "</tr>\n";
       }
 	}
  
@@ -103,7 +103,7 @@ if ($handle = opendir($fulldir)) {
 	  print "<td><div class='size'>".human_filesize(get_file($dir_path.$entry)['size'])."</div></td>";
 	  print "<td><div class='date'>".get_file($dir_path.$entry)['updated']."</div></td>";
  
-      print "</tr>";
+      print "</tr>\n";
       }
 	}
   
