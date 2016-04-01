@@ -49,6 +49,12 @@ $webdir = $_SERVER['SERVER_NAME'] . $thisfilepath;
 
 $fulldir = $workdir . $dir;
 
+// hide files that contain this string
+
+//$hidefiles = "browser.php";
+$hidefiles = $thisfilename;
+
+
 // path tree
 
 if ($handle = opendir($fulldir)) {
@@ -114,7 +120,7 @@ if ($handle = opendir($fulldir)) {
     }
 
     foreach($directories as $entry) {
-        if (is_file($dir_path . $entry)) {
+        if (is_file($dir_path . $entry) AND !strpos(" ".$entry, $hidefiles) ) {
             print "<tr>";
             print "<td><div class='file'>";
             print '<img width="12" height="12" src="' . add_icon("empty") . '" />&nbsp;' . "<a href='//" . get_file($dir_path . $entry) ['link'] . "'>";
@@ -132,7 +138,8 @@ if ($handle = opendir($fulldir)) {
 function get_file($entry)
 {
     global $workdir, $webdir, $dir;
-    if (file_exists($entry)) {
+    //if (file_exists($entry) ) {
+    if (file_exists($entry) ) {
         $name = pathinfo($entry) ['basename'];
         $folder = pathinfo($entry) ['dirname'];
         $fixed_dir = substr($dir, 1) . "/"; // move '/' from start to end
