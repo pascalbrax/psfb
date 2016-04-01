@@ -138,7 +138,6 @@ if ($handle = opendir($fulldir)) {
 function get_file($entry)
 {
     global $workdir, $webdir, $dir;
-    //if (file_exists($entry) ) {
     if (file_exists($entry) ) {
         $name = pathinfo($entry) ['basename'];
         $folder = pathinfo($entry) ['dirname'];
