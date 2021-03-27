@@ -3,17 +3,28 @@
 <head>
 	<title>pSimpleFileBrowser</title>
 	<style>	
+    div {
+        padding-right: 2px;
+        padding-left: 2px;
+    }
 	div.nav {
 		color:black;font-family:Trebuchet MS,Tahoma,Helvetica,Verdana,Arial;background-color: #EEEEFF;
+        background-image: linear-gradient(to right, #BBBBFF , #EEEEFF);
 		}
 	div.file {
 		color:black;font-family:Trebuchet MS,Tahoma,Helvetica,Verdana,Arial;background-color: #BBBBFF;
+        background-image: linear-gradient(to right, #BBBBFF , #CCCCFF);
 		}
 	div.size {
 		font-family:Trebuchet MS,Tahoma,Helvetica,Verdana,Arial;background-color: #CCCCFF;
+        background-image: linear-gradient(to right, #CCCCFF , #DDDDFF);
+		}
+    div.type {
+		font-family:Trebuchet MS,Tahoma,Helvetica,Verdana,Arial;background-color: #DDDDFF;
+        background-image: linear-gradient(to right, #DDDDFF , #EEEEFF);
 		}
 	div.date {
-		font-family:Trebuchet MS,Tahoma,Helvetica,Verdana,Arial;background-color: #DDDDFF;
+		font-family:Trebuchet MS,Tahoma,Helvetica,Verdana,Arial;background-color: #EEEEFF;
 		}
 
 	a:link {color:black;text-decoration:none;}
@@ -114,6 +125,7 @@ if ($handle = opendir($fulldir)) {
                     </div>
                 </td>';
             print "<td><div class='size'>" . human_filesize(get_file($dir_path . $entry) ['size']) . "</div></td>";
+            print "<td><div class='type'>folder</div></td>";
             print "<td><div class='date'>" . get_file($dir_path . $entry) ['updated'] . "</div></td>";
             print "</tr>\n";
         }
@@ -127,6 +139,7 @@ if ($handle = opendir($fulldir)) {
             print get_file($dir_path . $entry) ['name'];
             print "</a> </div> </td>";
             print "<td><div class='size'>" . human_filesize(get_file($dir_path . $entry) ['size']) . "</div></td>";
+            print "<td><div class='type'>". get_file($dir_path . $entry) ['mime'] ."</div></td>";
             print "<td><div class='date'>" . get_file($dir_path . $entry) ['updated'] . "</div></td>";
             print "</tr>\n";
         }
@@ -144,8 +157,9 @@ function get_file($entry)
         $fixed_dir = substr($dir, 1) . "/"; // move '/' from start to end
         $link = $webdir . $fixed_dir . $name;
         $size = filesize($entry);
+        $mime = mime_content_type($entry);
         $updated = date("d/m/Y", filemtime($dir_path . $entry));
-        return compact('name', 'folder', 'link', 'size', 'updated');
+        return compact('name', 'folder', 'link', 'size', 'mime', 'updated');
     }
     else {
         return false;
